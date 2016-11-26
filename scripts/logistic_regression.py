@@ -5,16 +5,36 @@ from sklearn.linear_model import LogisticRegression as lg
 from sklearn.cross_validation import cross_val_score
 from sklearn.metrics import accuracy_score as acc
 
-train_data = pd.read_csv("../datasets/train.csv")
+train_data = pd.read_csv("./datasets/train.csv")
 
-print train_data['Entry'].unique()
+from sklearn.cross_validation import train_test_split
+predictors = ['Score', '% Completed']
+train_target = train_data['Bootcamp']
+
+
+x_train, x_test, y_train, y_test = train_test_split(train_data[predictors], train_target) #split training data
+
 
 # The columns we'll use to predict the target
-predictors = []
+# train_predictors = train_data[predictors]
+# print train_predictors
+print x_train['Score'].describe()
+# print np.log(x_train['Score'])
+
 
 # Initialize our algorithm class
-# alg = lg()
-# model = alg.fit()
+alg = lg()
+model = alg.fit(x_train,y_train)
+
+# predictions
+predictions = model.predict(x_test)
+
+scores = cross_val_score(model, x_test, y_test, cv=5)
+print scores
+
+# accuracy_score
+accuracy_score = acc(predictions,y_test)
+print accuracy_score
 
 # correlation matrix
 correlations = train_data.corr()
