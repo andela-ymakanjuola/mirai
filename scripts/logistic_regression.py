@@ -17,9 +17,11 @@ print abundant_class_data.shape
 
 samples = []
 def random_sampling(df):
+    data = df
     for i in xrange(55):
-        samples.append(df.sample(n=125).append(minority_class_data))
-
+        df_sample = data.sample(n=125)
+        samples.append(df_sample.append(minority_class_data))
+        data = data.drop(df_sample['S/N'].tolist(), axis=0, errors='ignore')
 random_sampling(abundant_class_data)
 
 train_sample_x = samples[1][predictors]
