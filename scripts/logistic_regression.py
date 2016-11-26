@@ -15,17 +15,17 @@ abundant_class_data = train_data[train_data['Bootcamp'] == False]
 minority_class_data = train_data[train_data['Bootcamp'] == True]
 print abundant_class_data.shape
 
-samples = []
-def random_sampling(df):
+random_samples = []
+def generateRandomSamples(df):
     data = df
     for i in xrange(55):
         df_sample = data.sample(n=125)
-        samples.append(df_sample.append(minority_class_data))
+        random_samples.append(df_sample.append(minority_class_data))
         data = data.drop(df_sample['S/N'].tolist(), axis=0, errors='ignore')
-random_sampling(abundant_class_data)
+generateRandomSamples(abundant_class_data)
 
-train_sample_x = samples[1][predictors]
-train_sample_target = samples[1]['Bootcamp']
+train_sample_x = random_samples[1][predictors]
+train_sample_target = random_samples[1]['Bootcamp']
 x_train, x_test, y_train, y_test = train_test_split(train_sample_x, train_sample_target) #split training data
 
 # The columns we'll use to predict the target
