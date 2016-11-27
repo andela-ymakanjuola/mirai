@@ -1,4 +1,5 @@
 from __future__ import division
+import time
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import OneHotEncoder
@@ -32,8 +33,6 @@ index=test_data['S/N']
 x_test=test_data.drop(['S/N'],axis=1)
 clf = LogisticRegression()
 grad = GradientBoostingClassifier(n_estimators=2000, max_depth=12, random_state=42)
-print 'x_train', x_train.info()
-print 'x_test',x_test.info()
 grad.fit(x_train,y)
 
 enc = OneHotEncoder()
@@ -46,15 +45,19 @@ x_test = enc.transform(grad.apply(x_test)[:, :, 0])
 clf.fit(x_train,y)
 
 scores = cross_val_score(clf, x_train, y, cv=5, scoring='f1_weighted')
-print 'F1 score', scores
+print 'F1 score using cross validation', scores
 
+#timer
+start = time.time()
 predictions=clf.predict(x_test)
+end = time.time()
+print(end - start)
 
 accuracy_score = acc(test['Bootcamp'],predictions)
-print 'accuracy',accuracy_score
+print 'Accuracy',accuracy_score
 
 accuracy_score = f1_score(test['Bootcamp'],predictions,average='weighted')
-print 'f1 on test', accuracy_score
+print 'F1 on test datasets', accuracy_score
 
 accuracy_score = roc_auc_score(test['Bootcamp'],predictions)
 print 'ROC', accuracy_score
