@@ -54,6 +54,7 @@ end = time.time()
 print(end - start)
 
 accuracy_score = acc(test['Bootcamp'],predictions)
+print predictions
 print 'Accuracy',accuracy_score
 
 accuracy_score = f1_score(test['Bootcamp'],predictions,average='weighted')
